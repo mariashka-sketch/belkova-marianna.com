@@ -1022,26 +1022,43 @@ body.fx .testi-viewport{padding-left:0;padding-right:0}
 
 
 /* ---------- темы выступлений ---------- */
-.topics{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.topics{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .topic{
-  display:flex;align-items:center;gap:16px;padding:18px 22px;
-  border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);
-  transition:border-color .2s,background .2s;
+  position:relative;display:flex;align-items:center;gap:18px;padding:18px 22px 18px 20px;
+  border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  transition:border-color .25s,transform .25s,box-shadow .25s;
 }
-.topic:hover{border-color:var(--line-strong);background:rgba(62,211,242,.06)}
-.topic-num{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--mint);min-width:26px}
-.topic-title{font-weight:700;font-size:16px;line-height:1.35}
+.topic::before{
+  content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--mint),var(--cyan));opacity:.8;
+}
+.topic:hover{border-color:var(--line-strong);transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.topic-num{
+  flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;
+  font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--mint);
+  background:rgba(94,240,160,.09);border:1px solid rgba(94,240,160,.28);
+}
+.topic-title{font-weight:700;font-size:16px;line-height:1.35;color:var(--text)}
 .topics-format{
-  display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:12px 18px;
-  border:1px solid var(--line-strong);border-radius:999px;font-size:14px;font-weight:600;color:var(--text);
+  display:inline-flex;align-items:center;gap:12px;margin-top:20px;padding:10px 18px 10px 10px;
+  border:1px solid var(--line-strong);border-radius:999px;background:rgba(62,211,242,.05);
+  font-size:14px;font-weight:600;color:var(--text);
 }
-.topics-format b{color:var(--mint);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
-.topics-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.topics-format b{
+  flex:none;color:#071219;background:var(--mint);font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;font-size:10.5px;padding:6px 11px;border-radius:999px;
+}
+.topics-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 @media (max-width:700px){
-  .topics{grid-template-columns:1fr}
-  .topic{padding:15px 18px}
+  .topics{grid-template-columns:1fr;gap:10px;margin-top:22px}
+  .topic{padding:14px 16px;gap:14px;border-radius:14px}
+  .topic-num{width:38px;height:38px;font-size:11px;border-radius:10px}
   .topic-title{font-size:15px}
-  .topics-format{align-items:flex-start;border-radius:16px}
+  .topics-format{align-items:flex-start;border-radius:16px;padding:12px 14px;line-height:1.45}
+  .topics-format b{margin-top:1px}
+  .topics-actions{flex-direction:column}
+  .topics-actions .btn{width:100%;justify-content:center}
 }
 
 /* ---------- сворачиваемый блок (программы) ---------- */

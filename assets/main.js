@@ -9,14 +9,21 @@ document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 if (burger && nav) {
+  const burgerTxt = burger.querySelector('.burger-txt');
   burger.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     burger.setAttribute('aria-expanded', open);
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    if (burgerTxt) burgerTxt.textContent = open ? 'Закрыть' : 'Меню';
+    document.body.classList.toggle('menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     nav.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Открыть меню');
+    if (burgerTxt) burgerTxt.textContent = 'Меню';
+    document.body.classList.remove('menu-open');
     document.body.style.overflow = '';
   }));
 }
@@ -277,5 +284,30 @@ document.querySelectorAll('.gal-play').forEach(function (btn) {
     try { localStorage.setItem('mb-cookie-ok', '1'); } catch (e) {}
     el.classList.add('cookie-hide');
     setTimeout(function () { el.remove(); }, 400);
+  });
+})();
+
+
+/* ------------------------------------------------------------
+   Сворачиваемый блок «Программы» на главной
+------------------------------------------------------------ */
+(function () {
+  var btn = document.getElementById('progToggle');
+  var body = document.getElementById('progGrid');
+  if (!btn || !body) return;
+  var txt = btn.querySelector('.fold-txt');
+  var total = body.querySelectorAll('article').length;
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    body.hidden = open;
+    if (txt) txt.textContent = open ? ('Развернуть ' + total + ' программ') : 'Свернуть программы';
+    if (!open) {
+      // карточки были скрыты — показываем их сразу, не дожидаясь observer
+      body.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('on'); });
+    } else {
+      var top = document.getElementById('programs');
+      if (top) window.scrollTo({ top: top.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+    }
   });
 })();

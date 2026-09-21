@@ -86,8 +86,13 @@ h2.display{font-size:clamp(24px,3.2vw,40px)}
 /* ---------- шапка ---------- */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:60;
-  background:rgba(7,18,25,.85);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
+}
+/* фон и блюр вынесены в псевдоэлемент: backdrop-filter на самой шапке
+   ломал position:fixed у мобильного меню (оно рисовалось только внутри 74px шапки) */
+.site-header::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:rgba(7,18,25,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
 }
 .header-in{
   max-width:var(--container);margin:0 auto;padding:0 28px;height:74px;
@@ -105,16 +110,24 @@ h2.display{font-size:clamp(24px,3.2vw,40px)}
 .nav a{transition:color .2s;padding:6px 0}
 .nav a:hover{color:var(--mint)}
 .nav a.active{color:var(--text);border-bottom:2px solid var(--mint)}
-.burger{display:none;background:none;border:1px solid var(--line-strong);width:44px;height:44px;border-radius:10px;cursor:pointer;position:relative;z-index:70}
-.burger span,.burger span::before,.burger span::after{
-  content:"";position:absolute;left:11px;width:20px;height:2px;background:var(--mint);transition:.25s;
+.burger{
+  display:none;align-items:center;gap:10px;height:44px;padding:0 15px 0 13px;
+  border-radius:12px;border:1px solid var(--mint);background:rgba(94,240,160,.14);
+  color:var(--mint);cursor:pointer;position:relative;z-index:70;
+  font-family:'Manrope',sans-serif;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
 }
-.burger span{top:21px}
-.burger span::before{top:-6px;left:0}
-.burger span::after{top:6px;left:0}
-.burger[aria-expanded="true"] span{background:transparent}
-.burger[aria-expanded="true"] span::before{transform:rotate(45deg);top:0}
-.burger[aria-expanded="true"] span::after{transform:rotate(-45deg);top:0}
+.burger-ico{position:relative;width:20px;height:14px;display:block;flex:none}
+.burger-ico i,.burger-ico::before,.burger-ico::after{
+  content:"";position:absolute;left:0;width:20px;height:2px;border-radius:2px;background:var(--mint);transition:.25s;
+}
+.burger-ico::before{top:0}
+.burger-ico i{top:6px}
+.burger-ico::after{top:12px}
+.burger[aria-expanded="true"] .burger-ico i{opacity:0}
+.burger[aria-expanded="true"] .burger-ico::before{transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] .burger-ico::after{transform:translateY(-6px) rotate(-45deg)}
+.nav-club{color:var(--mint)}
+body.menu-open{overflow:hidden}
 
 /* ---------- hero ---------- */
 .hero{position:relative;padding:180px 0 90px;overflow:hidden}
@@ -269,8 +282,10 @@ h2.display{font-size:clamp(24px,3.2vw,40px)}
     flex-direction:column;align-items:center;justify-content:center;gap:30px;
     font-size:20px;display:none;z-index:65;
   }
-  .nav.open{display:flex}
-  .burger{display:block}
+  .nav.open{display:flex;gap:26px}
+  .nav a{padding:8px 0;font-size:22px;font-weight:700;color:var(--text)}
+  .nav a.active{border-bottom-color:var(--mint)}
+  .burger{display:inline-flex}
   .header-cta{display:none}
   .hero{padding-top:140px}
   .hero-stats{grid-template-columns:1fr 1fr;gap:24px}
@@ -509,7 +524,7 @@ body.fx .testi-head{opacity:0}
   .nav{gap:15px;font-size:13.5px}
   .header-tel{font-size:12.5px}
 }
-@media (max-width:1120px){ .header-tel{display:none} }
+@media (max-width:1380px){ .header-tel{display:none} }
 
 
 
@@ -1004,3 +1019,41 @@ body.fx .testi-viewport{padding-left:0;padding-right:0}
 .cookie-banner .cookie-ok{flex-shrink:0}
 .cookie-hide{opacity:0;transform:translateY(12px);pointer-events:none}
 @media (max-width:560px){ .cookie-banner{left:10px;right:10px;bottom:10px;padding:14px 16px} }
+
+
+/* ---------- темы выступлений ---------- */
+.topics{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.topic{
+  display:flex;align-items:center;gap:16px;padding:18px 22px;
+  border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);
+  transition:border-color .2s,background .2s;
+}
+.topic:hover{border-color:var(--line-strong);background:rgba(62,211,242,.06)}
+.topic-num{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--mint);min-width:26px}
+.topic-title{font-weight:700;font-size:16px;line-height:1.35}
+.topics-format{
+  display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:12px 18px;
+  border:1px solid var(--line-strong);border-radius:999px;font-size:14px;font-weight:600;color:var(--text);
+}
+.topics-format b{color:var(--mint);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+.topics-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+@media (max-width:700px){
+  .topics{grid-template-columns:1fr}
+  .topic{padding:15px 18px}
+  .topic-title{font-size:15px}
+  .topics-format{align-items:flex-start;border-radius:16px}
+}
+
+/* ---------- сворачиваемый блок (программы) ---------- */
+.fold-btn{
+  display:inline-flex;align-items:center;gap:12px;margin-top:8px;padding:16px 26px;
+  border:1px solid var(--line-strong);border-radius:999px;background:rgba(62,211,242,.06);cursor:pointer;
+  font-family:'Manrope',sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--mint);transition:background .2s;
+}
+.fold-btn:hover{background:rgba(62,211,242,.13)}
+.fold-ico{transition:transform .3s}
+.fold-btn[aria-expanded="true"] .fold-ico{transform:rotate(180deg)}
+.fold-body{margin-top:28px}
+.fold-body[hidden]{display:none}
+@media (max-width:560px){.fold-btn{width:100%;justify-content:center}}

@@ -202,7 +202,7 @@ document.querySelectorAll('.gal-play').forEach(function (btn) {
     });
   }
 
-  document.querySelectorAll('.ev-media[data-media]').forEach(function (box) {
+  document.querySelectorAll('.ev-media[data-media], .award-photo[data-media]').forEach(function (box) {
     var base = box.getAttribute('data-media');
     var pics = ['webp', 'jpg', 'jpeg', 'png'];
     var vids = ['mp4', 'webm'];
